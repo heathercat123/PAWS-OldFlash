@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "source-path": [
+            "src_no_sound_system_1_2_flash"
+        ],
+        "target-player": "11",
+        "swf-version": 13,
+        "output": "bin/CatGamePaws_android.swf",
+        "default-frame-rate": 60,
+        "default-size": {
+            "width": 1334,
+            "height": 750
+        }
+    },
+    "mainClass": "src_no_sound_system_1_2_flash/Main"
+}
