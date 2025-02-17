@@ -2430,7 +2430,7 @@ package entities
             DIRECTION = Entity.LEFT;
             yPos += 4;
          }
-         AVOID_COLLISION_DETECTION = 0;
+         AVOID_COLLISION_DETECTION = false;
          gravity_friction = 0;
          x_friction = 1;
       }

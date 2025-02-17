@@ -10,7 +10,6 @@
 
 package starling.filters
 {
-    import flash.display3D.Context3DProfile;
     import flash.geom.Matrix3D;
     import flash.geom.Rectangle;
 
@@ -21,8 +20,6 @@ package starling.filters
     import starling.textures.Texture;
     import starling.utils.MathUtil;
     import starling.utils.Pool;
-
-    import VPlus;
 
     use namespace starling_internal;
 
@@ -56,7 +53,7 @@ package starling.filters
         /** Creates a new, empty instance. */
         public function FilterHelper(textureFormat:String="bgra")
         {
-            _usePotTextures = Starling.current.profile == Context3DProfile.BASELINE_CONSTRAINED;
+            _usePotTextures = true;
             _preferredScale = Starling.contentScaleFactor;
             _textureFormat = textureFormat;
             _sizeStep = 64; // must be POT!
@@ -124,7 +121,7 @@ package starling.filters
             if (texture)
             {
                 if (texture.root.nativeWidth == _nativeWidth && texture.root.nativeHeight == _nativeHeight)
-                    VPlus.insertAt(_pool, _pool.length, texture);
+                    _pool.splice(_pool.length, 0, texture);
                 else
                     texture.dispose();
             }

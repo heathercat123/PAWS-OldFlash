@@ -50,24 +50,7 @@ package neutronized
             CrossPromotionPanel.DO_NOT_INCREASE_SLOT = true;
          }
          this.xmlCrossPromotion = new XML();
-         try
-         {
-            if(Utils.IS_ANDROID)
-            {
-               crossPromotionURLRequest = new URLRequest("http://www.neutronized.com/services/paws_crosspromotion/xml/index.xml?" + int(Math.random() * 100000000000));
-            }
-             else
-             {
-                crossPromotionURLRequest = new URLRequest("http://www.neutronized.com/services/paws_crosspromotion_ios/xml/index.xml?" + int(Math.random() * 100000000000));
-             }
-             this.loaderCrossPromotion = new URLLoader(crossPromotionURLRequest);
-             this.loaderCrossPromotion.addEventListener(Event.COMPLETE,this.xmlCrossPromotionLoaded);
-             this.loaderCrossPromotion.addEventListener(IOErrorEvent.IO_ERROR,this.xmlCrossPromotionError);
-         }
-         catch (error:Error)
-         {
-            this.xmlCrossPromotion = null;
-         }
+         this.xmlCrossPromotion = null;
       }
       
       protected function xmlCrossPromotionLoaded(event:Event) : void

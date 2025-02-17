@@ -1,4 +1,4 @@
-// =================================================================================================
+﻿// =================================================================================================
 //
 //	Starling Framework
 //	Copyright Gamua GmbH. All Rights Reserved.
@@ -138,8 +138,8 @@ package starling.rendering
             _stage3D.addEventListener(Event.CONTEXT3D_CREATE, onContextCreated, false, 40, true);
             _context = _stage3D.context3D;
             _shareContext = _context && _context.driverInfo != "Disposed";
-            _backBufferWidth  = _context ? _context.backBufferWidth  : 0;
-            _backBufferHeight = _context ? _context.backBufferHeight : 0;
+            _backBufferWidth  = 0;
+            _backBufferHeight = 0;
             _backBufferScaleFactor = _pixelSize = 1.0;
             _stencilReferenceValues = new Dictionary(true);
             _clipRectStack = new <Rectangle>[];
@@ -173,7 +173,7 @@ package starling.rendering
 
             if (!_shareContext)
             {
-                if (_context) _context.dispose(false);
+                if (_context) _context.dispose();
                 sSharedData = new Dictionary();
             }
         }
@@ -857,8 +857,8 @@ package starling.rendering
          */
         public function refreshBackBufferSize(scaleFactor:Number):void
         {
-            _backBufferWidth = _context.backBufferWidth;
-            _backBufferHeight = _context.backBufferHeight;
+            _backBufferWidth = 0;
+            _backBufferHeight = 0;
             _backBufferScaleFactor = scaleFactor;
         }
 

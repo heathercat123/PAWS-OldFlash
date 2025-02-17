@@ -12,11 +12,8 @@ package starling.utils
 {
     import flash.display.Stage3D;
     import flash.display3D.Context3D;
-    import flash.display3D.Context3DMipFilter;
     import flash.display3D.Context3DRenderMode;
-    import flash.display3D.Context3DTextureFilter;
     import flash.display3D.Context3DTextureFormat;
-    import flash.display3D.Context3DWrapMode;
     import flash.events.ErrorEvent;
     import flash.events.Event;
     import flash.utils.setTimeout;
@@ -88,7 +85,7 @@ package starling.utils
 
             switch (texture.format)
             {
-                case Context3DTextureFormat.COMPRESSED_ALPHA:
+                case "compressedAlpha":
                     formatBits = 3; break;
                 case Context3DTextureFormat.COMPRESSED:
                     formatBits = 2; break;
@@ -110,24 +107,24 @@ package starling.utils
                                                  smoothing:String="bilinear",
                                                  repeat:Boolean=false):void
         {
-            var wrap:String = repeat ? Context3DWrapMode.REPEAT : Context3DWrapMode.CLAMP;
+            var wrap:String = repeat ? "repeat" : "clamp";
             var filter:String;
             var mipFilter:String;
 
             if (smoothing == TextureSmoothing.NONE)
             {
-                filter = Context3DTextureFilter.NEAREST;
-                mipFilter = mipMapping ? Context3DMipFilter.MIPNEAREST : Context3DMipFilter.MIPNONE;
+                filter = "nearest";
+                mipFilter = mipMapping ? "mipnearest" : "mipnone";
             }
             else if (smoothing == TextureSmoothing.BILINEAR)
             {
-                filter = Context3DTextureFilter.LINEAR;
-                mipFilter = mipMapping ? Context3DMipFilter.MIPNEAREST : Context3DMipFilter.MIPNONE;
+                filter = "linear";
+                mipFilter = mipMapping ? "mipnearest" : "mipnone";
             }
             else
             {
-                filter = Context3DTextureFilter.LINEAR;
-                mipFilter = mipMapping ? Context3DMipFilter.MIPLINEAR : Context3DMipFilter.MIPNONE;
+                filter = "linear";
+                mipFilter = mipMapping ? "miplinear" : "mipnone";
             }
 
             // Starling.context.setSamplerStateAt(sampler, wrap, filter, mipFilter);
@@ -166,7 +163,7 @@ package starling.utils
             {
                 case Context3DTextureFormat.COMPRESSED:
                     formatFlag = "dxt1"; break;
-                case Context3DTextureFormat.COMPRESSED_ALPHA:
+                case "compressedAlpha":
                     formatFlag = "dxt5"; break;
                 default:
                     formatFlag = "rgba";

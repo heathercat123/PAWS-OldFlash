@@ -1,4 +1,4 @@
-// =================================================================================================
+﻿// =================================================================================================
 //
 //	Starling Framework
 //	Copyright Gamua GmbH. All Rights Reserved.
@@ -12,7 +12,7 @@ package starling.textures
 {
     import flash.display3D.Context3DTextureFormat;
     import flash.display3D.textures.TextureBase;
-    import flash.display3D.textures.VideoTexture;
+    // import flash.display3D.textures.VideoTexture;
     import flash.events.Event;
 
     import starling.core.Starling;
@@ -30,9 +30,9 @@ package starling.textures
         /** Creates a new instance with the given parameters.
          *  <code>base</code> must be of type <code>flash.display3D.textures.VideoTexture</code>.
          */
-        public function ConcreteVideoTexture(base:VideoTexture, scale:Number=1)
+        public function ConcreteVideoTexture(base:*/*VideoTexture*/, scale:Number=1)
         {
-            super(base, Context3DTextureFormat.BGRA, base.videoWidth, base.videoHeight, false,
+            super(base, Context3DTextureFormat.BGRA, 0, 0, false,
                   false, false, scale);
         }
 
@@ -102,9 +102,9 @@ package starling.textures
             return nativeHeight / scale;
         }
 
-        private function get videoBase():VideoTexture
+        private function get videoBase():Number // god please forgive me
         {
-            return base as VideoTexture;
+            return null;
         }
     }
 }

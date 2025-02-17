@@ -1,4 +1,4 @@
-// =================================================================================================
+﻿// =================================================================================================
 //
 //	Starling Framework
 //	Copyright Gamua GmbH. All Rights Reserved.
@@ -14,8 +14,6 @@ package starling.events
 
     import starling.core.starling_internal;
     import starling.display.DisplayObject;
-
-    import VPlus;
 
     use namespace starling_internal;
     
@@ -85,7 +83,7 @@ package starling.events
                     {
                         if(_eventStack.indexOf(type) == -1)
                         {
-                            VPlus.removeAt(listeners, index);
+                            listeners.splice(index, 1);
                         }
                         else
                         {

@@ -1,1 +1,1 @@
-@asconfigc --debug=true
+@asconfigc --debug=true --sdk="C:\Program Files\FLEX_HOME-old"

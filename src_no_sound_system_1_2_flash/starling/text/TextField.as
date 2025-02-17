@@ -107,7 +107,7 @@ package starling.text
         // helper objects
         private static var sMatrix:Matrix = new Matrix();
         private static var sDefaultCompositor:ITextCompositor = new TrueTypeCompositor();
-        private static var sDefaultTextureFormat:String = Context3DTextureFormat.BGRA_PACKED;
+        private static var sDefaultTextureFormat:String = Context3DTextureFormat.BGRA;
 
         /** Create a new text field with the given properties. */
         public function TextField(width:int, height:int, text:String="",

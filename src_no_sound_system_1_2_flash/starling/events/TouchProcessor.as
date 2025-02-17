@@ -1,4 +1,4 @@
-// =================================================================================================
+﻿// =================================================================================================
 //
 //	Starling Framework
 //	Copyright Gamua GmbH. All Rights Reserved.
@@ -18,8 +18,6 @@ package starling.events
     import starling.display.DisplayObject;
     import starling.display.Stage;
     import starling.utils.Pool;
-
-    import VPlus;
 
     /** The TouchProcessor is used to convert mouse and touch events of the conventional
      *  Flash stage to Starling's TouchEvents.
@@ -136,7 +134,6 @@ package starling.events
             {
                 for (i=_lastTaps.length-1; i>=0; --i)
                     if (_elapsedTime - _lastTaps[i].timestamp > _multitapTime)
-                        // VPlus.removeAt(_lastTaps, i);
                         _lastTaps.splice(i, 1);
             }
             
@@ -179,7 +176,7 @@ package starling.events
                 // remove ended touches
                 for (i=_currentTouches.length-1; i>=0; --i)
                     if (_currentTouches[i].phase == TouchPhase.ENDED)
-                        VPlus.removeAt(_currentTouches, i);
+                       _currentTouches.splice(i, 1);
 
                 sUpdatedTouches.length = 0;
             }
@@ -408,7 +405,7 @@ package starling.events
             if (nearbyTap)
             {
                 touch.tapCount = nearbyTap.tapCount + 1;
-                VPlus.removeAt(_lastTaps, _lastTaps.indexOf(nearbyTap));
+                _lastTaps.splice(_lastTaps.indexOf(nearbyTap), 1);
             }
             else
             {
@@ -422,7 +419,7 @@ package starling.events
         {
             for (var i:int=_currentTouches.length-1; i>=0; --i)
                 if (_currentTouches[i].id == touch.id)
-                    _currentTouches.removeAt(i);
+                    _currentTouches.splice(i, 1);
 
             _currentTouches[_currentTouches.length] = touch; // avoiding 'push'
         }

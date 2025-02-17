@@ -12,7 +12,7 @@ You will need the following software to be installed:
 - [The Adobe Air SDK](https://airsdk.harman.com/).
 
 #### Compiling
-NOTE: These instrucions are made for VSCode ONLY. To compile from the command line, [install asconfigc](https://github.com/BowlerHatLLC/asconfigc?tab=readme-ov-file#installation) refer to [this](https://github.com/BowlerHatLLC/asconfigc?tab=readme-ov-file#command-line-usage). On Windows, you can also use the BAT files included.
+NOTE: These instrucions are made for VSCode ONLY. To compile from the command line, [install asconfigc](https://github.com/BowlerHatLLC/asconfigc?tab=readme-ov-file#installation) refer to [this](https://github.com/BowlerHatLLC/asconfigc?tab=readme-ov-file#command-line-usage).
 
 1. Set the AIR_HOME environment variable to the path of your AIR sdk.
 1. Open the directory of the port in Visual Studio.

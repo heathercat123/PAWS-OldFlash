@@ -142,7 +142,7 @@ package starling.text
         public static function get texture():Texture
         {
             var bitmapData:BitmapData = getBitmapData();
-            var format:String = Context3DTextureFormat.BGRA_PACKED;
+            var format:String = Context3DTextureFormat.BGRA;
             var texture:Texture = Texture.fromBitmapData(bitmapData, false, false, 1, format);
             bitmapData.dispose();
             bitmapData = null;

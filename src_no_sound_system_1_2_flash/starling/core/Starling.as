@@ -1,4 +1,4 @@
-// =================================================================================================
+﻿// =================================================================================================
 //
 //	Starling Framework
 //	Copyright Gamua GmbH. All Rights Reserved.
@@ -16,7 +16,6 @@ package starling.core
     import flash.display.StageAlign;
     import flash.display.StageScaleMode;
     import flash.display3D.Context3D;
-    import flash.display3D.Context3DProfile;
     import flash.events.ErrorEvent;
     import flash.events.Event;
     import flash.events.KeyboardEvent;
@@ -344,7 +343,6 @@ package starling.core
             _nativeStage.removeEventListener(KeyboardEvent.KEY_UP, onKey, false);
             _nativeStage.removeEventListener(Event.RESIZE, onResize, false);
             _nativeStage.removeEventListener(Event.MOUSE_LEAVE, onMouseLeave, false);
-            _nativeStage.removeEventListener(Event.BROWSER_ZOOM_CHANGE, onBrowserZoomChange, false);
             _nativeStage.removeChild(_nativeOverlay);
             
             stage3D.removeEventListener(Event.CONTEXT3D_CREATE, onContextCreated, false);
@@ -359,7 +357,7 @@ package starling.core
             _painter.dispose();
 
             var index:int =  sAll.indexOf(this);
-            if (index != -1) sAll.removeAt(index);
+            if (index != -1) sAll.splice(index, 1);
             if (sCurrent == this) sCurrent = null;
         }
         
@@ -487,10 +485,7 @@ package starling.core
                 updateClippedViewPort();
                 updateStatsDisplayPosition();
 
-                var contentScaleFactor:Number =
-                        _supportHighResolutions ? _nativeStage.contentsScaleFactor : 1.0;
-
-                if (_supportBrowserZoom) contentScaleFactor *= _nativeStage.browserZoomFactor;
+                var contentScaleFactor:Number = 1.0;
 
                 _painter.configureBackBuffer(_clippedViewPort, contentScaleFactor,
                     _antiAliasing, true, _supportBrowserZoom);
@@ -686,8 +681,7 @@ package starling.core
 
         private function onBrowserZoomChange(event:Event):void
         {
-            _painter.refreshBackBufferSize(
-                _nativeStage.contentsScaleFactor * _nativeStage.browserZoomFactor);
+            return;
         }
 
         private function onMouseLeave(event:Event):void
@@ -821,8 +815,6 @@ package starling.core
 
             if (!_skipUnchangedFrames || _painter.shareContext)
                 return true;
-            else if (SystemUtil.isDesktop && profile != Context3DProfile.BASELINE_CONSTRAINED)
-                return false;
             else
             {
                 // Rendering can be skipped when both this and previous frame are empty.
@@ -1073,16 +1065,7 @@ package starling.core
         public function get supportBrowserZoom():Boolean { return _supportBrowserZoom; }
         public function set supportBrowserZoom(value:Boolean):void
         {
-            if (_supportBrowserZoom != value)
-            {
-                _supportBrowserZoom = value;
-                if (contextValid) updateViewPort(true);
-
-                if (value) _nativeStage.addEventListener(
-                    Event.BROWSER_ZOOM_CHANGE, onBrowserZoomChange, false, 0, true);
-                else _nativeStage.removeEventListener(
-                    Event.BROWSER_ZOOM_CHANGE, onBrowserZoomChange, false);
-            }
+            _supportBrowserZoom = false;
         }
 
         /** When enabled, Starling will skip rendering the stage if it hasn't changed since the

@@ -1,4 +1,4 @@
-// =================================================================================================
+﻿// =================================================================================================
 //
 //	Starling Framework
 //	Copyright Gamua GmbH. All Rights Reserved.
@@ -170,7 +170,7 @@ package starling.display
         internal function removeEnterFrameListener(listener:DisplayObject):void
         {
             var index:int = _enterFrameListeners.indexOf(listener);
-            if (index >= 0) _enterFrameListeners.removeAt(index);
+            if (index >= 0) _enterFrameListeners.splice(index, 1);
         }
         
         /** @private */

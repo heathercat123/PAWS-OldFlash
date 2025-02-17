@@ -1,4 +1,4 @@
-// =================================================================================================
+﻿// =================================================================================================
 //
 //	Starling Framework
 //	Copyright Gamua GmbH. All Rights Reserved.
@@ -14,9 +14,7 @@ package starling.textures
     import flash.display.BitmapData;
     import flash.display3D.Context3D;
     import flash.display3D.Context3DTextureFormat;
-    import flash.display3D.textures.RectangleTexture;
     import flash.display3D.textures.TextureBase;
-    import flash.display3D.textures.VideoTexture;
     import flash.geom.Matrix;
     import flash.geom.Point;
     import flash.geom.Rectangle;
@@ -204,16 +202,6 @@ package starling.textures
                         options.premultipliedAlpha, options.optimizeForRenderToTexture,
                         options.scale);
             }
-            else if (base is RectangleTexture)
-            {
-                return new ConcreteRectangleTexture(base as RectangleTexture,
-                        options.format, width, height, options.premultipliedAlpha,
-                        options.optimizeForRenderToTexture, options.scale);
-            }
-            else if (base is VideoTexture)
-            {
-                return new ConcreteVideoTexture(base as VideoTexture, options.scale);
-            }
             else
                 throw new ArgumentError("Unsupported 'base' type: " + getQualifiedClassName(base));
         }
@@ -237,7 +225,7 @@ package starling.textures
         public static function fromEmbeddedAsset(assetClass:Class, mipMapping:Boolean=false,
                                                  optimizeForRenderToTexture:Boolean=false,
                                                  scale:Number=1, format:String="bgra",
-                                                 forcePotTexture:Boolean=false):Texture
+                                                 forcePotTexture:Boolean=true):Texture
         {
             var texture:Texture;
             var asset:Object = new assetClass();
@@ -303,7 +291,7 @@ package starling.textures
         public static function fromBitmap(bitmap:Bitmap, generateMipMaps:Boolean=false,
                                           optimizeForRenderToTexture:Boolean=false,
                                           scale:Number=1, format:String="bgra",
-                                          forcePotTexture:Boolean=false,
+                                          forcePotTexture:Boolean=true,
                                           async:Function=null):Texture
         {
             return fromBitmapData(bitmap.bitmapData, generateMipMaps, optimizeForRenderToTexture,
@@ -336,7 +324,7 @@ package starling.textures
         public static function fromBitmapData(data:BitmapData, generateMipMaps:Boolean=false,
                                               optimizeForRenderToTexture:Boolean=false,
                                               scale:Number=1, format:String="bgra",
-                                              forcePotTexture:Boolean=false,
+                                              forcePotTexture:Boolean=true,
                                               async:Function=null):Texture
         {
             var texture:Texture = Texture.empty(data.width / scale, data.height / scale, true,
@@ -454,21 +442,8 @@ package starling.textures
         private static function fromVideoAttachment(type:String, attachment:Object,
                                                     scale:Number, onComplete:Function):Texture
         {
-            if (!SystemUtil.supportsVideoTexture)
-                throw new NotSupportedError("Video Textures are not supported on this platform");
-
-            var context:Context3D = Starling.context;
-            if (context == null) throw new MissingContextError();
-
-            var base:VideoTexture = context.createVideoTexture();
-            var texture:ConcreteTexture = new ConcreteVideoTexture(base, scale);
-            texture.attachVideo(type, attachment, onComplete);
-            texture.onRestore = function():void
-            {
-                texture.root.attachVideo(type, attachment);
-            };
-
-            return texture;
+            throw new NotSupportedError("Video Textures are not supported on Adobe Flash 11");
+			return null;
         }
 
         /** Creates a texture with a certain size and color.
@@ -489,7 +464,7 @@ package starling.textures
                                          color:uint=0xffffff, alpha:Number=1.0,
                                          optimizeForRenderToTexture:Boolean=false,
                                          scale:Number=-1, format:String="bgra",
-                                         forcePotTexture:Boolean=false):Texture
+                                         forcePotTexture:Boolean=true):Texture
         {
             var texture:Texture = Texture.empty(width, height, true, false,
                                         optimizeForRenderToTexture, scale, format, forcePotTexture);
@@ -524,7 +499,7 @@ package starling.textures
         public static function empty(width:Number, height:Number, premultipliedAlpha:Boolean=true,
                                      mipMapping:Boolean=false, optimizeForRenderToTexture:Boolean=false,
                                      scale:Number=-1, format:String="bgra",
-                                     forcePotTexture:Boolean=false):Texture
+                                     forcePotTexture:Boolean=true):Texture
         {
             if (scale <= 0) scale = Starling.contentScaleFactor;
 
@@ -537,35 +512,17 @@ package starling.textures
 
             var origWidth:Number  = width  * scale;
             var origHeight:Number = height * scale;
-            var useRectTexture:Boolean = !forcePotTexture && !mipMapping &&
-                Starling.current.profile != "baselineConstrained" &&
-                format.indexOf("compressed") == -1;
+            var useRectTexture:Boolean = false;
+            actualWidth  = MathUtil.getNextPowerOfTwo(origWidth);
+            actualHeight = MathUtil.getNextPowerOfTwo(origHeight);
 
-            if (useRectTexture)
-            {
-                actualWidth  = Math.ceil(origWidth  - 0.000000001); // avoid floating point errors
-                actualHeight = Math.ceil(origHeight - 0.000000001);
+            nativeTexture = context.createTexture(
+                    actualWidth, actualHeight, format, optimizeForRenderToTexture);
 
-                nativeTexture = context.createRectangleTexture(
-                        actualWidth, actualHeight, format, optimizeForRenderToTexture);
-
-                concreteTexture = new ConcreteRectangleTexture(
-                        nativeTexture as RectangleTexture, format, actualWidth, actualHeight,
-                        premultipliedAlpha, optimizeForRenderToTexture, scale);
-            }
-            else
-            {
-                actualWidth  = MathUtil.getNextPowerOfTwo(origWidth);
-                actualHeight = MathUtil.getNextPowerOfTwo(origHeight);
-
-                nativeTexture = context.createTexture(
-                        actualWidth, actualHeight, format, optimizeForRenderToTexture);
-
-                concreteTexture = new ConcretePotTexture(
-                        nativeTexture as flash.display3D.textures.Texture, format,
-                        actualWidth, actualHeight, mipMapping, premultipliedAlpha,
-                        optimizeForRenderToTexture, scale);
-            }
+            concreteTexture = new ConcretePotTexture(
+                    nativeTexture as flash.display3D.textures.Texture, format,
+                    actualWidth, actualHeight, mipMapping, premultipliedAlpha,
+                    optimizeForRenderToTexture, scale);
 
             concreteTexture.onRestore = concreteTexture.clear;
 
@@ -775,7 +732,7 @@ package starling.textures
             var context:Context3D = target.context;
             var profile:String = target ? target.profile : "baseline";
             var isCompressed:Boolean = (textureFormat == Context3DTextureFormat.COMPRESSED ||
-                                        textureFormat == Context3DTextureFormat.COMPRESSED_ALPHA);
+                                        textureFormat == "compressedAlpha");
 
             if (profile == "baseline" || profile == "baselineConstrained")
                 return 2048;
@@ -794,12 +751,11 @@ package starling.textures
          */
         public static function get asyncBitmapUploadEnabled():Boolean
         {
-            return ConcreteRectangleTexture.asyncUploadEnabled;
+            return ConcretePotTexture.asyncUploadEnabled;
         }
 
         public static function set asyncBitmapUploadEnabled(value:Boolean):void
         {
-            ConcreteRectangleTexture.asyncUploadEnabled = value;
             ConcretePotTexture.asyncUploadEnabled = value;
         }
     }

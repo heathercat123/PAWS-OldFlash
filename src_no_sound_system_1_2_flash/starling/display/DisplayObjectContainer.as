@@ -24,8 +24,6 @@ package starling.display
     import starling.rendering.Painter;
     import starling.utils.MatrixUtil;
 
-    import VPlus;
-
     use namespace starling_internal;
     
     /**
@@ -127,7 +125,6 @@ package starling.display
                 }
                 else
                 {
-                    // VPlus.insertAt(_children, index, child);
 
                     child.removeFromParent();
 

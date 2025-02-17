@@ -56,7 +56,7 @@ package starling.textures
         /** @inheritDoc */
         override public function dispose():void
         {
-            base.removeEventListener(Event.TEXTURE_READY, onTextureReady);
+            // base.removeEventListener(Event.TEXTURE_READY, onTextureReady);
             super.dispose();
         }
 
@@ -120,13 +120,7 @@ package starling.textures
         /** @inheritDoc */
         override public function uploadAtfData(data:ByteArray, offset:int = 0, async:* = null):void
         {
-            var isAsync:Boolean = async is Function || async === true;
-
-            if (async is Function)
-            {
-                _textureReadyCallback = async as Function;
-                base.addEventListener(Event.TEXTURE_READY, onTextureReady);
-            }
+            var isAsync:Boolean = false;
 
             potBase.uploadCompressedTextureFromByteArray(data, offset, isAsync);
             setDataUploaded();
@@ -134,44 +128,22 @@ package starling.textures
 
         private function upload(source:BitmapData, mipLevel:uint, isAsync:Boolean):void
         {
-            if (isAsync)
-            {
-                uploadAsync(source, mipLevel);
-                base.addEventListener(Event.TEXTURE_READY, onTextureReady);
-                base.addEventListener(ErrorEvent.ERROR, onTextureReady);
-            }
-            else
-            {
-                potBase.uploadFromBitmapData(source, mipLevel);
-            }
+            potBase.uploadFromBitmapData(source, mipLevel);
         }
 
         private function uploadAsync(source:BitmapData, mipLevel:uint):void
         {
             if (sAsyncUploadEnabled)
             {
-                try { base["uploadFromBitmapDataAsync"](source, mipLevel); }
-                catch (error:Error)
-                {
-                    if (error.errorID == 3708 || error.errorID == 1069)
-                        sAsyncUploadEnabled = false;
-                    else
-                        throw error;
-                }
+                sAsyncUploadEnabled = false;
             }
 
-            if (!sAsyncUploadEnabled)
-            {
-                setTimeout(base.dispatchEvent, 1, new Event(Event.TEXTURE_READY));
-                potBase.uploadFromBitmapData(source);
-            }
+            // setTimeout(base.dispatchEvent, 1, new Event(Event.TEXTURE_READY));
+            potBase.uploadFromBitmapData(source);
         }
 
         private function onTextureReady(event:Event):void
         {
-            base.removeEventListener(Event.TEXTURE_READY, onTextureReady);
-            base.removeEventListener(ErrorEvent.ERROR, onTextureReady);
-
             execute(_textureReadyCallback, this, event as ErrorEvent);
             _textureReadyCallback = null;
         }

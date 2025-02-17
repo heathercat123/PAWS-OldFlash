@@ -1,0 +1,14 @@
+# Let's not include compiled files!
+/bin
+
+#
+# Used for compiling on Windows
+# Here's their content in the same order as below, where one line is one file:
+#
+# @asconfigc --clean --sdk="C:\Program Files\FLEX_HOME-old"
+# @asconfigc --debug=false --sdk="C:\Program Files\FLEX_HOME-old"
+# @asconfigc --debug=true --sdk="C:\Program Files\FLEX_HOME-old"
+#
+/clean.bat
+/compile.bat
+/compiledebug.bat
