@@ -2,7 +2,7 @@
 /bin
 
 #
-# Used for compiling on Windows
+# Used for compiling on Windows. Yes, even though the guide is for Visual Studio Code, I don't actually use it anymore!
 # Here's their content in the same order as below, where one line is one file:
 #
 # @asconfigc --clean --sdk="C:\Program Files\FLEX_HOME-old"
