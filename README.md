@@ -1,3 +1,6 @@
+# Migrated
+This repository has been migrated to [Codeberg](https://codeberg.org/heathercat123/PAWS-OldFlash) and as such will be archived on Github.
+
 # PAWS-OldFlash
  Port of Super Cat Tales: PAWS to older versions of Adobe Flash, based on the decomp. Requires a minimum of Adobe Flash 11.
 
